@@ -3,457 +3,684 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Connect Bridge | Ecosystem</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Vaid Tamrakar | AI Developer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* === Variables & Reset === */
+        /* CSS Variables & Theme Setup */
         :root {
-            --primary: #00f2fe;
-            --secondary: #4facfe;
-            --bg-color: #050505;
-            --glass-bg: rgba(20, 20, 22, 0.65);
-            --glass-card: rgba(30, 30, 35, 0.5);
+            --bg-color: #050507;
+            --glass-bg: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.08);
-            --text-main: #ffffff;
-            --text-muted: #888891;
-            --success: #00ff88;
-            --danger: #ff3366;
+            --accent-glow: #00f0ff;
+            --accent-purple: #7000ff;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --transition: all 0.3s ease;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
         }
 
-        body {
+        html, body {
             background-color: var(--bg-color);
-            color: var(--text-main);
-            min-height: 100vh;
+            color: var(--text-primary);
+            font-family: var(--font-main);
             overflow-x: hidden;
+            line-height: 1.5;
         }
 
-        /* === Animated Background Elements === */
-        .bg-elements {
-            position: fixed;
-            width: 100vw;
-            height: 100vh;
-            top: 0;
-            left: 0;
-            z-index: 0;
-            overflow: hidden;
-            pointer-events: none;
-            transition: all 1.5s ease-in-out;
-        }
-
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.4;
-            transition: all 1.5s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        .orb-1 {
-            width: 400px; height: 400px;
-            background: radial-gradient(circle, var(--primary), transparent 70%);
-            top: -10%; left: -10%;
-            animation: float 20s infinite alternate ease-in-out;
-        }
-
-        .orb-2 {
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, #6a11cb, transparent 70%);
-            bottom: -20%; right: -10%;
-            animation: float 25s infinite alternate-reverse ease-in-out;
-        }
-
-        /* Shift Background on Dashboard Mode */
-        body.dashboard-active .orb-1 { top: -20%; left: 80%; opacity: 0.2; }
-        body.dashboard-active .orb-2 { bottom: 50%; right: 50%; opacity: 0.15; }
-
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(50px, 50px) scale(1.2); }
-        }
-
-        /* === Shared Glassmorphism === */
-        .glass-panel {
+        /* Utility Classes */
+        .glass {
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
         }
 
-        /* === The Floating Logo === */
-        .floating-logo {
-            position: fixed;
-            top: 40%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #fff, #a5a5b0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            z-index: 100;
-            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-            white-space: nowrap;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
         }
 
-        .floating-logo span {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Logo position when Dashboard is active */
-        body.dashboard-active .floating-logo {
-            top: 25px;
-            left: 40px;
-            transform: translate(0, 0) scale(0.65);
-            transform-origin: left top;
-        }
-
-        /* === Login Section === */
-        #login-section {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 50;
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .login-box {
-            width: 100%; max-width: 420px;
-            padding: 3rem 2rem 2.5rem;
-            margin-top: 5rem; /* Space for the floating logo */
-            opacity: 1;
-            transition: all 0.5s ease;
-        }
-
-        .login-box.fade-out {
+        /* Scroll Reveal Animation */
+        .reveal {
             opacity: 0;
-            transform: translateY(30px) scale(0.95);
-            pointer-events: none;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
 
-        .input-group { position: relative; margin-bottom: 1.5rem; }
-        .input-group input {
-            width: 100%; padding: 1rem;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px; color: var(--text-main);
-            outline: none; transition: all 0.3s ease;
-        }
-        .input-group input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 242, 254, 0.1); }
-        .input-group input::placeholder { color: var(--text-muted); }
-
-        .btn {
-            width: 100%; padding: 1rem;
-            border: none; border-radius: 12px;
-            background: linear-gradient(135deg, var(--secondary), var(--primary));
-            color: #fff; font-weight: 600; cursor: pointer;
-            transition: all 0.3s ease; position: relative; overflow: hidden;
-            display: flex; justify-content: center; align-items: center;
-        }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 242, 254, 0.3); }
-        
-        .spinner {
-            display: none; width: 20px; height: 20px;
-            border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid #fff;
-            border-radius: 50%; animation: spin 1s linear infinite; position: absolute;
-        }
-        .btn.loading .btn-text { opacity: 0; }
-        .btn.loading .spinner { display: block; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        /* === Dashboard Section === */
-        #dashboard-section {
-            position: relative;
-            z-index: 10;
-            padding: 25px 40px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(40px);
-            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
-            transition-delay: 0.4s;
-        }
-
-        body.dashboard-active #dashboard-section {
+        .reveal.active {
             opacity: 1;
-            visibility: visible;
             transform: translateY(0);
         }
 
-        /* Top Nav */
-        header {
-            display: flex; justify-content: flex-end; align-items: center;
-            height: 60px; margin-bottom: 2rem;
-            animation: slideDown 0.8s ease backwards; animation-delay: 1s;
+        .fade-in {
+            opacity: 0;
+            animation: fadeInLoad 1s ease-out forwards;
+        }
+
+        @keyframes fadeInLoad {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(90deg, var(--accent-glow), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Navigation - FIXED OVERLAP ISSUE */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: var(--transition);
+            /* Added background to prevent text overlapping when scrolling */
+            background: rgba(5, 5, 7, 0.95); 
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-glow);
+        }
+
+        /* Hero Section */
+        #home {
+            min-height: calc(100vh - 60px);
+            display: flex;
+            align-items: center;
+            padding-top: 80px; 
+            padding-bottom: 2rem;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 300px 1fr;
+            align-items: center;
+            gap: 2rem;
+            width: 100%;
+        }
+
+        .hero-left {
+            text-align: right;
+        }
+
+        .hero-left h1 {
+            font-size: 3rem;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-left h2 {
+            font-size: 1.2rem;
+            color: var(--accent-glow);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .hero-left p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            max-width: 350px;
+            margin-left: auto;
+        }
+
+        .hero-center {
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+
+        .profile-img-container {
+            width: 260px;
+            height: 260px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 240, 255, 0.3);
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            animation: liquid-morph 8s ease-in-out infinite;
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.15), inset 0 0 20px rgba(112, 0, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .profile-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0; 
+        }
+
+        @keyframes liquid-morph {
+            0%, 100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+            34% { border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%; }
+            67% { border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%; }
+        }
+
+        .hero-right {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            max-width: 200px;
+        }
+
+        .btn {
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, rgba(0,240,255,0.1), rgba(112,0,255,0.1));
+            border-color: var(--accent-glow);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(0,240,255,0.1);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 25px rgba(0,240,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--glass-bg);
+            border-color: var(--glass-border);
+            color: var(--text-secondary);
+        }
+
+        .btn-secondary:hover {
+            color: #fff;
+            border-color: var(--text-secondary);
+            transform: translateY(-2px);
+        }
+
+        section {
+            padding: 4rem 0; /* Restored padding for breathing room */
+        }
+
+        .about-card {
+            padding: 2rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-card p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
         }
         
-        .status-badge {
-            display: flex; align-items: center; gap: 8px;
-            background: rgba(0, 255, 136, 0.1); padding: 8px 16px;
-            border-radius: 20px; border: 1px solid rgba(0, 255, 136, 0.2);
-            color: var(--success); font-size: 0.85rem; margin-right: 1.5rem;
-        }
-        .pulse-dot {
-            width: 8px; height: 8px; background: var(--success);
-            border-radius: 50%; box-shadow: 0 0 10px var(--success);
-            animation: pulse 2s infinite;
+        .about-card p:last-child {
+            margin-bottom: 0;
         }
 
-        .profile-icon {
-            width: 45px; height: 45px; border-radius: 50%;
-            background: linear-gradient(135deg, #2a2a32, #141416);
-            border: 2px solid rgba(255, 255, 255, 0.1); cursor: pointer;
-            transition: transform 0.3s, border-color 0.3s;
+        .highlight {
+            color: var(--accent-glow);
+            font-weight: 500;
         }
-        .profile-icon:hover { transform: scale(1.05); border-color: var(--primary); }
 
-        /* Dashboard Grid */
-        .dashboard-grid {
+        /* Skills Section */
+        .skills-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-category {
+            padding: 1.5rem;
+        }
+
+        .skill-category h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .tag:hover {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--accent-glow);
+            border-color: var(--accent-glow);
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(112, 0, 255, 0.5);
+        }
+
+        .project-img {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: rgba(255,255,255,0.02);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            border: 1px dashed var(--glass-border);
+        }
+
+        .project-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .project-info p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.8rem;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+
+        .project-links .btn {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
             flex: 1;
         }
 
-        .card-header {
-            font-size: 1.2rem; font-weight: 600; margin-bottom: 1.5rem;
-            color: #fff; display: flex; align-items: center; gap: 10px;
+        /* Journey Timeline */
+        .timeline {
+            max-width: 600px;
+            margin: 0 auto;
+            border-left: 2px solid var(--glass-border);
+            padding-left: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
         }
 
-        /* Staggered Animations for cards */
-        .dash-card {
-            background: var(--glass-card); border-radius: 20px;
-            padding: 2rem; border: 1px solid var(--glass-border);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .timeline-item {
+            position: relative;
         }
-        .dash-card:hover { border-color: rgba(255,255,255,0.15); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
 
-        /* Connected Devices List */
-        .devices-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.85rem;
+            top: 0.3rem;
+            width: 12px;
+            height: 12px;
+            background: var(--bg-color);
+            border: 2px solid var(--accent-glow);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-glow);
         }
-        .device-item {
-            background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 16px; padding: 1.5rem; text-align: center;
-            transition: all 0.3s ease; position: relative; overflow: hidden;
-        }
-        .device-item:hover { transform: translateY(-5px); background: rgba(255,255,255,0.03); }
-        .device-item.connected { border-color: rgba(0, 242, 254, 0.3); box-shadow: 0 0 20px rgba(0, 242, 254, 0.05); }
-        
-        .device-icon { font-size: 2rem; margin-bottom: 1rem; }
-        .device-name { font-weight: 500; margin-bottom: 0.5rem; }
-        .device-status { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem; }
-        .device-item.connected .device-status { color: var(--primary); }
 
-        .device-btn {
-            background: transparent; border: 1px solid var(--glass-border);
-            color: var(--text-main); padding: 8px 16px; border-radius: 8px;
-            font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease;
+        .timeline-item h4 {
+            font-size: 1rem;
+            color: var(--text-primary);
         }
-        .device-btn:hover { background: rgba(255,255,255,0.1); }
-        .device-item.connected .device-btn { border-color: var(--danger); color: var(--danger); }
-        .device-item.connected .device-btn:hover { background: rgba(255, 51, 102, 0.1); box-shadow: 0 0 10px rgba(255, 51, 102, 0.2); }
 
-        /* Side Panels Grid */
-        .side-panels { display: flex; flex-direction: column; gap: 2rem; }
-
-        /* AI Assistant Panel */
-        .ai-status-circle {
-            width: 100px; height: 100px; margin: 0 auto 1.5rem;
-            border-radius: 50%; background: radial-gradient(circle, rgba(0,242,254,0.2), transparent);
-            border: 2px solid var(--primary); display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 0 30px rgba(0,242,254,0.2); animation: breathe 3s infinite ease-in-out;
+        .timeline-item p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
         }
-        .ai-status-circle span { font-size: 2.5rem; }
-        
-        .action-btn {
-            width: 100%; padding: 1rem; margin-bottom: 1rem; border-radius: 12px;
-            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
-            color: #fff; cursor: pointer; transition: all 0.3s ease;
-        }
-        .action-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--primary); }
 
-        /* Footer */
+        /* Footer / Contact */
         footer {
-            text-align: center; padding: 2rem 0; margin-top: auto;
-            color: var(--text-muted); font-size: 0.85rem;
-            border-top: 1px solid rgba(255,255,255,0.05); margin-top: 3rem;
+            padding: 2rem 0;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 1rem;
+            text-align: center;
         }
 
-        /* Keyframes */
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); }
-        }
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(0,242,254,0.2); }
-            50% { transform: scale(1.05); box-shadow: 0 0 50px rgba(0,242,254,0.4); }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
         }
 
-        /* Mobile Responsive */
+        .social-links a {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            color: var(--accent-purple);
+            transform: scale(1.1);
+        }
+
+        .footer-text {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Back to Top Button */
+        #backToTop {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--accent-glow);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            z-index: 99;
+        }
+
+        #backToTop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #backToTop:hover {
+            background: rgba(0, 240, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive Design */
         @media (max-width: 900px) {
-            .dashboard-grid { grid-template-columns: 1fr; }
-            body.dashboard-active .floating-logo { left: 20px; }
-            #dashboard-section { padding: 20px; }
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 1.5rem;
+                padding-top: 2rem;
+            }
+            .hero-left {
+                text-align: center;
+                order: 2;
+            }
+            .hero-left p {
+                margin: 0 auto;
+            }
+            .hero-center {
+                order: 1;
+            }
+            .hero-right {
+                order: 3;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                max-width: 100%;
+            }
+            .btn {
+                flex: 1 1 calc(50% - 0.5rem);
+            }
+            .profile-img-container {
+                width: 220px;
+                height: 220px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .nav-links {
+                display: none; 
+            }
+            .hero-left h1 {
+                font-size: 2.2rem;
+            }
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            section {
+                padding: 3rem 0;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-elements">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-    </div>
-
-    <h1 class="floating-logo" id="mainLogo">AI Connect <span>Bridge</span></h1>
-
-    <div id="login-section">
-        <div class="glass-panel login-box" id="loginBox">
-            <p style="text-align:center; color: var(--text-muted); margin-bottom: 2rem;">Bridge Your AI Ecosystem</p>
-            <form id="loginForm">
-                <div class="input-group">
-                    <input type="email" placeholder="Email address" required autocomplete="off">
-                </div>
-                <div class="input-group">
-                    <input type="password" placeholder="Password" required>
-                </div>
-                <button type="submit" class="btn" id="loginBtn">
-                    <span class="btn-text">Connect Identity</span>
-                    <div class="spinner"></div>
-                </button>
-            </form>
+    <nav id="navbar">
+        <div class="container nav-content fade-in" style="animation-delay: 0.1s;">
+            <a href="#home" class="logo">VAID.AI</a>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#journey">Journey</a>
+                <a href="#contact">Contact</a>
+            </div>
         </div>
-    </div>
+    </nav>
 
-    <div id="dashboard-section">
-        <header>
-            <div class="status-badge">
-                <div class="pulse-dot"></div> Bridge Active
+    <section id="home">
+        <div class="container hero-grid">
+            <div class="hero-left fade-in" style="animation-delay: 0.3s;">
+                <h1>Vaid Tamrakar</h1>
+                <h2>Developer</h2>
+                <p>Building intuitive, futuristic applications with code and logic. Fusing AI capabilities with cutting-edge UI design.</p>
             </div>
-            <div class="profile-icon"></div>
-        </header>
+            
+            <div class="hero-center fade-in" style="animation-delay: 0.5s;">
+                <div class="profile-img-container">
+                    <img src="" alt="Vaid Tamrakar Profile">
+                </div>
+            </div>
 
-        <main class="dashboard-grid">
-            <section class="dash-card">
-                <div class="card-header">📱 Connected Devices</div>
-                <div class="devices-grid">
-                    <div class="device-item connected">
-                        <div class="device-icon">📱</div>
-                        <div class="device-name">Android Smartphone</div>
-                        <div class="device-status">Connected</div>
-                        <button class="device-btn" onclick="toggleDevice(this)">Disconnect</button>
-                    </div>
-                    <div class="device-item">
-                        <div class="device-icon">💻</div>
-                        <div class="device-name">Window Laptop</div>
-                        <div class="device-status">Offline</div>
-                        <button class="device-btn" onclick="toggleDevice(this)">Connect</button>
-                    </div>
-                    <div class="device-item connected">
-                        <div class="device-icon">🔊</div>
-                        <div class="device-name">Earbuds</div>
-                        <div class="device-status">Connected</div>
-                        <button class="device-btn" onclick="toggleDevice(this)">Disconnect</button>
-                    </div>
-                    <div class="device-item">
-                        <div class="device-icon">💊</div> <div class="device-name">Tablet</div>
-                        <div class="device-status">Offline</div>
-                        <button class="device-btn" onclick="toggleDevice(this)">Connect</button>
+            <div class="hero-right fade-in" style="animation-delay: 0.7s;">
+                <a href="#projects" class="btn btn-primary">View Projects</a>
+                <a href="#contact" class="btn btn-secondary">Contact Me</a>
+                <a href="#" class="btn btn-secondary">Certifications</a>
+                <a href="#" class="btn btn-secondary">Download Resume</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="container reveal">
+        <h2 class="section-title">About Me</h2>
+        <div class="glass about-card">
+            <p>Hello! I am a <span class="highlight">Python Developer</span> and <span class="highlight">Machine Learning student</span> specializing in Artificial Intelligence. I merge backend logic with modern design aesthetics, possessing a strong foundation in <span class="highlight">Frontend UI development</span>.</p>
+            <p>Skilled in Object-Oriented Programming (OOPS) using both Python and C++, I approach problems with a logic-first mindset. I am deeply passionate about technology and innovation, identifying proudly as a <span class="highlight">Tech Slayy</span> who loves pushing the boundaries of what code can do.</p>
+        </div>
+    </section>
+
+    <section id="skills" class="container reveal">
+        <h2 class="section-title">Technical Arsenal</h2>
+        <div class="skills-grid">
+            <div class="glass skill-category">
+                <h3>Programming Languages</h3>
+                <div class="skill-tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">C++</span>
+                </div>
+            </div>
+            <div class="glass skill-category">
+                <h3>Core Competencies</h3>
+                <div class="skill-tags">
+                    <span class="tag">OOPS</span>
+                    <span class="tag">Machine Learning</span>
+                    <span class="tag">Artificial Intelligence</span>
+                    <span class="tag">Frontend UI Basics</span>
+                </div>
+            </div>
+            <div class="glass skill-category">
+                <h3>Tools & Concepts</h3>
+                <div class="skill-tags">
+                    <span class="tag">Problem Solving</span>
+                    <span class="tag">Logic Building</span>
+                    <span class="tag">Responsive Design</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="container reveal">
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="projects-grid">
+            <div class="glass project-card">
+                <div class="project-img">[ Image Placeholder ]</div>
+                <div class="project-info">
+                    <h3>AI Connect Bridge</h3>
+                    <p>Futuristic dashboard featuring connected device management and AI ecosystem controls.</p>
+                    <div class="skill-tags" style="margin-bottom: 0.8rem;">
+                        <span class="tag" style="font-size: 0.7rem;">Python</span>
+                        <span class="tag" style="font-size: 0.7rem;">UI Design</span>
                     </div>
                 </div>
-            </section>
-
-            <div class="side-panels">
-                <section class="dash-card">
-                    <div class="card-header">⚙️ Bridge Control Panel</div>
-                    <button class="action-btn" style="border-color: var(--primary); color: var(--primary);">+ Connect New Device</button>
-                    <button class="action-btn">🔄 Sync All Devices</button>
-                    <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted); display: flex; justify-content: space-between;">
-                        <span>Data Flow:</span> <span style="color: var(--primary);">Encrypted</span>
-                    </div>
-                </section>
-
-                <section class="dash-card" style="text-align: center;">
-                    <div class="card-header" style="justify-content: center;">🧠 AI Assistant</div>
-                    <div class="ai-status-circle">
-                        <span>🤖</span>
-                    </div>
-                    <p style="color: var(--success); font-weight: 500; margin-bottom: 1.5rem;">System Online</p>
-                    <button class="btn" style="padding: 0.8rem;">Initiate Chat</button>
-                </section>
+                <div class="project-links">
+                    <a href="#" class="btn btn-primary">Live Demo</a>
+                    <a href="#" class="btn btn-secondary">GitHub</a>
+                </div>
             </div>
-        </main>
 
-        <footer>
-            AI Connect Bridge &copy; 2026 | All Rights Reserved<br>
-            <span style="font-size: 0.75rem; opacity: 0.5;">Prototype Version &ndash; Work in Progress</span>
-        </footer>
-    </div>
+            <div class="glass project-card">
+                <div class="project-img">[ Image Placeholder ]</div>
+                <div class="project-info">
+                    <h3>AI Resume Analyzer</h3>
+                    <p>A web-based professional analysis tool styled with a liquid glass aesthetic.</p>
+                    <div class="skill-tags" style="margin-bottom: 0.8rem;">
+                        <span class="tag" style="font-size: 0.7rem;">HTML/CSS</span>
+                        <span class="tag" style="font-size: 0.7rem;">JavaScript</span>
+                    </div>
+                </div>
+                <div class="project-links">
+                    <a href="#" class="btn btn-primary">Live Demo</a>
+                    <a href="#" class="btn btn-secondary">GitHub</a>
+                </div>
+            </div>
+            
+            <div class="glass project-card">
+                <div class="project-img">[ Image Placeholder ]</div>
+                <div class="project-info">
+                    <h3>ML Automation Script</h3>
+                    <p>Data clustering and processing scripts optimizing automated workflows.</p>
+                    <div class="skill-tags" style="margin-bottom: 0.8rem;">
+                        <span class="tag" style="font-size: 0.7rem;">Python</span>
+                        <span class="tag" style="font-size: 0.7rem;">Machine Learning</span>
+                    </div>
+                </div>
+                <div class="project-links">
+                    <a href="#" class="btn btn-primary">Live Demo</a>
+                    <a href="#" class="btn btn-secondary">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="journey" class="container reveal">
+        <h2 class="section-title">My Journey</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h4>Started Machine Learning</h4>
+                <p>Began my deep dive into Python and ML algorithms.</p>
+            </div>
+            <div class="timeline-item">
+                <h4>Mastered Frontend UI</h4>
+                <p>Combined backend logic with stunning visual designs.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="social-links">
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+        <p class="footer-text">© 2026 Vaid Tamrakar. All rights reserved.</p>
+    </footer>
 
     <script>
-        // 1. Handle Login Transition
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('loginBtn');
-            const loginBox = document.getElementById('loginBox');
-            const loginSection = document.getElementById('login-section');
-            
-            // Show loading spinner
-            btn.classList.add('loading');
-            btn.disabled = true;
-
-            // Wait 1.5 seconds, then trigger transition
-            setTimeout(() => {
-                // Fade out the login box
-                loginBox.classList.add('fade-out');
-                
-                // Add active class to body to trigger Dashboard CSS animations
-                setTimeout(() => {
-                    document.body.classList.add('dashboard-active');
-                    // Remove login section from flow after fade
-                    setTimeout(() => {
-                        loginSection.style.display = 'none';
-                    }, 800);
-                }, 400); 
-
-            }, 1500);
-        });
-
-        // 2. Handle Device Connect/Disconnect Prototype Logic
-        function toggleDevice(btn) {
-            const card = btn.parentElement;
-            const statusText = card.querySelector('.device-status');
-            
-            if (card.classList.contains('connected')) {
-                // Disconnect it
-                card.classList.remove('connected');
-                statusText.innerText = 'Offline';
-                btn.innerText = 'Connect';
-            } else {
-                // Connect it
-                card.classList.add('connected');
-                statusText.innerText = 'Connected';
-                btn.innerText = 'Disconnect';
-                
-                // Add a quick click animation effect
-                card.style.transform = 'scale(0.95)';
-                setTimeout(() => card.style.transform = '', 150);
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
             }
         }
+        
+        window.addEventListener("scroll", reveal);
+        // Trigger reveal on page load
+        reveal();
     </script>
 </body>
 </html>
