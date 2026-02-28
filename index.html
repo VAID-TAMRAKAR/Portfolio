@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Connect Bridge | Ecosystem</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* === Variables & Reset === */
+        :root {
+            --primary: #00f2fe;
+            --secondary: #4facfe;
+            --bg-color: #050505;
+            --glass-bg: rgba(20, 20, 22, 0.65);
+            --glass-card: rgba(30, 30, 35, 0.5);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-muted: #888891;
+            --success: #00ff88;
+            --danger: #ff3366;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* === Animated Background Elements === */
+        .bg-elements {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+            transition: all 1.5s ease-in-out;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            transition: all 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .orb-1 {
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, var(--primary), transparent 70%);
+            top: -10%; left: -10%;
+            animation: float 20s infinite alternate ease-in-out;
+        }
+
+        .orb-2 {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, #6a11cb, transparent 70%);
+            bottom: -20%; right: -10%;
+            animation: float 25s infinite alternate-reverse ease-in-out;
+        }
+
+        /* Shift Background on Dashboard Mode */
+        body.dashboard-active .orb-1 { top: -20%; left: 80%; opacity: 0.2; }
+        body.dashboard-active .orb-2 { bottom: 50%; right: 50%; opacity: 0.15; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.2); }
+        }
+
+        /* === Shared Glassmorphism === */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        /* === The Floating Logo === */
+        .floating-logo {
+            position: fixed;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #fff, #a5a5b0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            z-index: 100;
+            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+            white-space: nowrap;
+        }
+
+        .floating-logo span {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Logo position when Dashboard is active */
+        body.dashboard-active .floating-logo {
+            top: 25px;
+            left: 40px;
+            transform: translate(0, 0) scale(0.65);
+            transform-origin: left top;
+        }
+
+        /* === Login Section === */
+        #login-section {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 50;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .login-box {
+            width: 100%; max-width: 420px;
+            padding: 3rem 2rem 2.5rem;
+            margin-top: 5rem; /* Space for the floating logo */
+            opacity: 1;
+            transition: all 0.5s ease;
+        }
+
+        .login-box.fade-out {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            pointer-events: none;
+        }
+
+        .input-group { position: relative; margin-bottom: 1.5rem; }
+        .input-group input {
+            width: 100%; padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px; color: var(--text-main);
+            outline: none; transition: all 0.3s ease;
+        }
+        .input-group input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 242, 254, 0.1); }
+        .input-group input::placeholder { color: var(--text-muted); }
+
+        .btn {
+            width: 100%; padding: 1rem;
+            border: none; border-radius: 12px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: #fff; font-weight: 600; cursor: pointer;
+            transition: all 0.3s ease; position: relative; overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 242, 254, 0.3); }
+        
+        .spinner {
+            display: none; width: 20px; height: 20px;
+            border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid #fff;
+            border-radius: 50%; animation: spin 1s linear infinite; position: absolute;
+        }
+        .btn.loading .btn-text { opacity: 0; }
+        .btn.loading .spinner { display: block; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* === Dashboard Section === */
+        #dashboard-section {
+            position: relative;
+            z-index: 10;
+            padding: 25px 40px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+            transition-delay: 0.4s;
+        }
+
+        body.dashboard-active #dashboard-section {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* Top Nav */
+        header {
+            display: flex; justify-content: flex-end; align-items: center;
+            height: 60px; margin-bottom: 2rem;
+            animation: slideDown 0.8s ease backwards; animation-delay: 1s;
+        }
+        
+        .status-badge {
+            display: flex; align-items: center; gap: 8px;
+            background: rgba(0, 255, 136, 0.1); padding: 8px 16px;
+            border-radius: 20px; border: 1px solid rgba(0, 255, 136, 0.2);
+            color: var(--success); font-size: 0.85rem; margin-right: 1.5rem;
+        }
+        .pulse-dot {
+            width: 8px; height: 8px; background: var(--success);
+            border-radius: 50%; box-shadow: 0 0 10px var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        .profile-icon {
+            width: 45px; height: 45px; border-radius: 50%;
+            background: linear-gradient(135deg, #2a2a32, #141416);
+            border: 2px solid rgba(255, 255, 255, 0.1); cursor: pointer;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .profile-icon:hover { transform: scale(1.05); border-color: var(--primary); }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            flex: 1;
+        }
+
+        .card-header {
+            font-size: 1.2rem; font-weight: 600; margin-bottom: 1.5rem;
+            color: #fff; display: flex; align-items: center; gap: 10px;
+        }
+
+        /* Staggered Animations for cards */
+        .dash-card {
+            background: var(--glass-card); border-radius: 20px;
+            padding: 2rem; border: 1px solid var(--glass-border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .dash-card:hover { border-color: rgba(255,255,255,0.15); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+
+        /* Connected Devices List */
+        .devices-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;
+        }
+        .device-item {
+            background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px; padding: 1.5rem; text-align: center;
+            transition: all 0.3s ease; position: relative; overflow: hidden;
+        }
+        .device-item:hover { transform: translateY(-5px); background: rgba(255,255,255,0.03); }
+        .device-item.connected { border-color: rgba(0, 242, 254, 0.3); box-shadow: 0 0 20px rgba(0, 242, 254, 0.05); }
+        
+        .device-icon { font-size: 2rem; margin-bottom: 1rem; }
+        .device-name { font-weight: 500; margin-bottom: 0.5rem; }
+        .device-status { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem; }
+        .device-item.connected .device-status { color: var(--primary); }
+
+        .device-btn {
+            background: transparent; border: 1px solid var(--glass-border);
+            color: var(--text-main); padding: 8px 16px; border-radius: 8px;
+            font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease;
+        }
+        .device-btn:hover { background: rgba(255,255,255,0.1); }
+        .device-item.connected .device-btn { border-color: var(--danger); color: var(--danger); }
+        .device-item.connected .device-btn:hover { background: rgba(255, 51, 102, 0.1); box-shadow: 0 0 10px rgba(255, 51, 102, 0.2); }
+
+        /* Side Panels Grid */
+        .side-panels { display: flex; flex-direction: column; gap: 2rem; }
+
+        /* AI Assistant Panel */
+        .ai-status-circle {
+            width: 100px; height: 100px; margin: 0 auto 1.5rem;
+            border-radius: 50%; background: radial-gradient(circle, rgba(0,242,254,0.2), transparent);
+            border: 2px solid var(--primary); display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 0 30px rgba(0,242,254,0.2); animation: breathe 3s infinite ease-in-out;
+        }
+        .ai-status-circle span { font-size: 2.5rem; }
+        
+        .action-btn {
+            width: 100%; padding: 1rem; margin-bottom: 1rem; border-radius: 12px;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+            color: #fff; cursor: pointer; transition: all 0.3s ease;
+        }
+        .action-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--primary); }
+
+        /* Footer */
+        footer {
+            text-align: center; padding: 2rem 0; margin-top: auto;
+            color: var(--text-muted); font-size: 0.85rem;
+            border-top: 1px solid rgba(255,255,255,0.05); margin-top: 3rem;
+        }
+
+        /* Keyframes */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); }
+        }
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(0,242,254,0.2); }
+            50% { transform: scale(1.05); box-shadow: 0 0 50px rgba(0,242,254,0.4); }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 900px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            body.dashboard-active .floating-logo { left: 20px; }
+            #dashboard-section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-elements">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <h1 class="floating-logo" id="mainLogo">AI Connect <span>Bridge</span></h1>
+
+    <div id="login-section">
+        <div class="glass-panel login-box" id="loginBox">
+            <p style="text-align:center; color: var(--text-muted); margin-bottom: 2rem;">Bridge Your AI Ecosystem</p>
+            <form id="loginForm">
+                <div class="input-group">
+                    <input type="email" placeholder="Email address" required autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <input type="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn" id="loginBtn">
+                    <span class="btn-text">Connect Identity</span>
+                    <div class="spinner"></div>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="dashboard-section">
+        <header>
+            <div class="status-badge">
+                <div class="pulse-dot"></div> Bridge Active
+            </div>
+            <div class="profile-icon"></div>
+        </header>
+
+        <main class="dashboard-grid">
+            <section class="dash-card">
+                <div class="card-header">📱 Connected Devices</div>
+                <div class="devices-grid">
+                    <div class="device-item connected">
+                        <div class="device-icon">📱</div>
+                        <div class="device-name">Android Smartphone</div>
+                        <div class="device-status">Connected</div>
+                        <button class="device-btn" onclick="toggleDevice(this)">Disconnect</button>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-icon">💻</div>
+                        <div class="device-name">Window Laptop</div>
+                        <div class="device-status">Offline</div>
+                        <button class="device-btn" onclick="toggleDevice(this)">Connect</button>
+                    </div>
+                    <div class="device-item connected">
+                        <div class="device-icon">🔊</div>
+                        <div class="device-name">Earbuds</div>
+                        <div class="device-status">Connected</div>
+                        <button class="device-btn" onclick="toggleDevice(this)">Disconnect</button>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-icon">💊</div> <div class="device-name">Tablet</div>
+                        <div class="device-status">Offline</div>
+                        <button class="device-btn" onclick="toggleDevice(this)">Connect</button>
+                    </div>
+                </div>
+            </section>
+
+            <div class="side-panels">
+                <section class="dash-card">
+                    <div class="card-header">⚙️ Bridge Control Panel</div>
+                    <button class="action-btn" style="border-color: var(--primary); color: var(--primary);">+ Connect New Device</button>
+                    <button class="action-btn">🔄 Sync All Devices</button>
+                    <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted); display: flex; justify-content: space-between;">
+                        <span>Data Flow:</span> <span style="color: var(--primary);">Encrypted</span>
+                    </div>
+                </section>
+
+                <section class="dash-card" style="text-align: center;">
+                    <div class="card-header" style="justify-content: center;">🧠 AI Assistant</div>
+                    <div class="ai-status-circle">
+                        <span>🤖</span>
+                    </div>
+                    <p style="color: var(--success); font-weight: 500; margin-bottom: 1.5rem;">System Online</p>
+                    <button class="btn" style="padding: 0.8rem;">Initiate Chat</button>
+                </section>
+            </div>
+        </main>
+
+        <footer>
+            AI Connect Bridge &copy; 2026 | All Rights Reserved<br>
+            <span style="font-size: 0.75rem; opacity: 0.5;">Prototype Version &ndash; Work in Progress</span>
+        </footer>
+    </div>
+
+    <script>
+        // 1. Handle Login Transition
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('loginBtn');
+            const loginBox = document.getElementById('loginBox');
+            const loginSection = document.getElementById('login-section');
+            
+            // Show loading spinner
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            // Wait 1.5 seconds, then trigger transition
+            setTimeout(() => {
+                // Fade out the login box
+                loginBox.classList.add('fade-out');
+                
+                // Add active class to body to trigger Dashboard CSS animations
+                setTimeout(() => {
+                    document.body.classList.add('dashboard-active');
+                    // Remove login section from flow after fade
+                    setTimeout(() => {
+                        loginSection.style.display = 'none';
+                    }, 800);
+                }, 400); 
+
+            }, 1500);
+        });
+
+        // 2. Handle Device Connect/Disconnect Prototype Logic
+        function toggleDevice(btn) {
+            const card = btn.parentElement;
+            const statusText = card.querySelector('.device-status');
+            
+            if (card.classList.contains('connected')) {
+                // Disconnect it
+                card.classList.remove('connected');
+                statusText.innerText = 'Offline';
+                btn.innerText = 'Connect';
+            } else {
+                // Connect it
+                card.classList.add('connected');
+                statusText.innerText = 'Connected';
+                btn.innerText = 'Disconnect';
+                
+                // Add a quick click animation effect
+                card.style.transform = 'scale(0.95)';
+                setTimeout(() => card.style.transform = '', 150);
+            }
+        }
+    </script>
+</body>
+</html>
