@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio of Vaid Tamrakar - Student, Problem Solver, and Aspiring Developer.">
+  <title>Vaid Tamrakar | Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="ambient-glow glow-top" aria-hidden="true"></div>
+  <div class="ambient-glow glow-bottom" aria-hidden="true"></div>
+
+  <!-- Mobile Glass Drawer Overlay -->
+  <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+
+  <!-- Left-side Glass Navigation Drawer -->
+  <aside class="glass-drawer" id="glassDrawer" aria-label="Mobile Navigation" aria-hidden="true">
+    <div class="drawer-header">
+      <a href="#home" class="drawer-logo">Vaid<span>.</span></a>
+      <button class="icon-btn close-btn" id="drawerCloseBtn" aria-label="Close menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <nav class="drawer-nav">
+      <a href="#home" class="drawer-link active">Home</a>
+      <a href="#about" class="drawer-link">About</a>
+      <a href="#skills" class="drawer-link">Skills</a>
+      <a href="#projects" class="drawer-link">Projects</a>
+      <a href="#education" class="drawer-link">Education</a>
+      <a href="#achievements" class="drawer-link">Achievements</a>
+      <a href="#contact" class="drawer-link">Contact</a>
+    </nav>
+    <div class="drawer-footer">
+      <p class="drawer-badge">Available for opportunities</p>
+    </div>
+  </aside>
+
+  <!-- Floating Glass Navigation Bar -->
+  <header class="glass-navbar-wrapper">
+    <nav class="glass-navbar" aria-label="Main Navigation">
+      <a href="#home" class="nav-logo">My<span>Portfolio</span></a>
+      <div class="nav-links">
+        <a href="#home" class="nav-link active">Home</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#education" class="nav-link">Education</a>
+        <a href="#achievements" class="nav-link">Achievements</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <a href="#contact" class="btn btn-sm btn-glass nav-cta">Let's Talk</a>
+        <button class="icon-btn mobile-menu-toggle" id="drawerOpenBtn" aria-label="Open menu" aria-expanded="false" aria-controls="glassDrawer">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 1. Hero Section -->
+    <section class="hero-section" id="home">
+      <div class="container hero-container">
+        <!-- Hero Left Content -->
+        <div class="hero-content">
+          <div class="status-pill">
+            <span class="status-dot"></span>
+            <span>Available for Collaborative Projects</span>
+          </div>
+          <p class="hero-greeting">Hello, I'm</p>
+          <h1 class="hero-title">Vaid Tamrakar</h1>
+          <h2 class="hero-subtitle">
+            And I'm a <span class="typewriter-text" id="typewriterText"></span><span class="cursor" aria-hidden="true">|</span>
+          </h2>
+          <p class="hero-desc">
+            I’m an AI Engineering student pursuing a B.Tech, passionate about implementing AI logic into real-world ideas and crafting intuitive, engaging UI/UX designs.
+          </p>
+          <div class="hero-cta-group">
+            <a href="#projects" class="btn btn-primary">Explore My Work</a>
+            <a href="#contact" class="btn btn-glass">Contact Me</a>
+          </div>
+          <div class="hero-social-links">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="GitHub Profile">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="LinkedIn Profile">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            </a>
+            <a href="mailto:vaidtamrakar@example.com" class="social-icon" aria-label="Email Me">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Hero Right: Glowing Animated Portrait Frame -->
+        <div class="hero-visual">
+          <div class="portrait-stage">
+            <div class="neon-glow-ring" aria-hidden="true"></div>
+            <div class="portrait-glass-card">
+              <!-- Replace profile-placeholder.svg with your image (e.g., photo.jpg) -->
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%236366f1'/%3E%3Cstop offset='100%25' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='400' fill='%2313182b'/%3E%3Ccircle cx='200' cy='150' r='65' fill='url(%23g)' opacity='0.85'/%3E%3Cpath d='M100 340 C100 245, 300 245, 300 340 Z' fill='url(%23g)' opacity='0.85'/%3E%3C/svg%3E" 
+                   alt="Vaid Tamrakar portrait" 
+                   class="portrait-img" 
+                   id="portraitImg"
+                   loading="eager" />
+              <div class="portrait-glass-reflection" aria-hidden="true"></div>
+            </div>
+            <!-- Floating Quick Badges -->
+            <div class="floating-badge badge-top-right">
+              <span class="badge-icon">⚡</span>
+              <span>Clean Code</span>
+            </div>
+            <div class="floating-badge badge-bottom-left">
+              <span class="badge-icon">🎯</span>
+              <span>Quick Learner</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. About Me Section -->
+    <section class="section-padding reveal-on-scroll" id="about">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-tag">Introduction</p>
+          <h2 class="section-title">About Me</h2>
+        </div>
+        <div class="about-grid">
+          <div class="glass-card about-main-card">
+            <h3>Turning Logic into Elegant Solutions</h3>
+            <p>
+              An aspiring AI Engineer passionate about intelligent systems, logical problem-solving, and crafting intuitive, visually engaging digital experiences. 
+            </p>
+            <p>
+              An AI Engineering student driven by curiosity, building smarter digital solutions through artificial intelligence, problem-solving, and modern interface design.
+            </p>
+            <div class="about-metrics">
+              <div class="metric-item">
+                <span class="metric-number">100%</span>
+                <span class="metric-label">Dedication to Craft</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-number">Continuous</span>
+                <span class="metric-label">Learning Curve</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-number">Clean</span>
+                <span class="metric-label">Code Architecture</span>
+              </div>
+            </div>
+          </div>
+          <div class="about-side-stack">
+            <div class="glass-card feature-mini-card">
+              <div class="card-icon">🧠</div>
+              <div>
+                <h4>Structured Thinking</h4>
+                <p>Strong foundations in arithmetic logic, scientific reasoning, and analytical clarity.</p>
+              </div>
+            </div>
+            <div class="glass-card feature-mini-card">
+              <div class="card-icon">🎨</div>
+              <div>
+                <h4>Design Aesthetics</h4>
+                <p>Passionate about glassmorphic depth, balanced typography, and responsive ergonomics.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Skills Section -->
+    <section class="section-padding reveal-on-scroll" id="skills">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-tag">Expertise</p>
+          <h2 class="section-title">Skills & Capabilities</h2>
+        </div>
+        <div class="skills-grid">
+          <div class="glass-card skill-card">
+            <div class="skill-header">
+              <div class="skill-category-icon">💻</div>
+              <h3>Frontend Development</h3>
+            </div>
+            <ul class="skill-pills">
+              <li>HTML5 </li>
+              <li>Modern CSS3 & Flexbox/Grid</li>
+              <li>Vanilla JavaScript </li>
+              <li>Responsive Design</li>
+              <li>Glassmorphism UI</li>
+            </ul>
+          </div>
+          <div class="glass-card skill-card">
+            <div class="skill-header">
+              <div class="skill-category-icon">📐</div>
+              <h3>Languages</h3>
+            </div>
+            <ul class="skill-pills">
+              <li>Python </li>
+              <li>Libraries </li>
+              <li>Pandas & Matplotlib</li>
+              <li>Numpy & Seaborn</li>
+              <li>Python using OPPS</li>
+            </ul>
+          </div>
+          <div class="glass-card skill-card">
+            <div class="skill-header">
+              <div class="skill-category-icon">🛠️</div>
+              <h3>Tools & Skills</h3>
+            </div>
+            <ul class="skill-pills">
+              <li>Git & GitHub</li>
+              <li>VS Code</li>
+              <li>Google Ai studio</li>
+              <li>REST APIs</li>
+              <li>Videography</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Projects Section -->
+    <section class="section-padding reveal-on-scroll" id="projects">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-tag">Portfolio</p>
+          <h2 class="section-title">Featured Projects</h2>
+        </div>
+        <div class="projects-grid">
+          <!-- Project 1 -->
+          <article class="glass-card project-card">
+            <div class="project-preview">
+              <div class="preview-mockup">
+                <span class="preview-tag">Interactive Portfolio</span>
+                <h4>Vaid's Animated Portfolio & Vedu AI</h4>
+              </div>
+            </div>
+            <div class="project-body">
+              <h3 class="project-title">Glassmorphic Portfolio with Vedu AI</h3>
+              <p class="project-desc">
+                A single-page animated portfolio showcasing dynamic typing, frosted glass styling, and an integrated assistant with secure API fallbacks.
+              </p>
+              <div class="project-tags">
+                <span>Vanilla JS</span>
+                <span>CSS3 Glassmorphism</span>
+                <span>AI Integration</span>
+              </div>
+              <div class="project-links">
+                <a href="#home" class="btn btn-sm btn-glass">Current Project</a>
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-ghost">Source Code</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 2 -->
+          <article class="glass-card project-card">
+            <div class="project-preview">
+              <div class="preview-mockup">
+                <span class="preview-tag">Academic Presentation</span>
+                <h4>The Future of Artificial Intelligence</h4>
+              </div>
+            </div>
+            <div class="project-body">
+              <h3 class="project-title">Future of AI Presentation Suite</h3>
+              <p class="project-desc">
+                A structured 12-slide academic deck detailing next-generation artificial intelligence paradigms, automated logic, and neural processing advancements.
+              </p>
+              <div class="project-tags">
+                <span>AI Research</span>
+                <span>Presentation Design</span>
+                <span>Academic</span>
+              </div>
+              <div class="project-links">
+                <a href="#contact" class="btn btn-sm btn-glass">Inquire</a>
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-ghost">Details</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 3 -->
+          <article class="glass-card project-card">
+            <div class="project-preview">
+              <div class="preview-mockup">
+                <span class="preview-tag">Problem Solver</span>
+                <h4>Quantitative & Analytical Logic Toolkit</h4>
+              </div>
+            </div>
+            <div class="project-body">
+              <h3 class="project-title">Analytical Logic & Math Utilities</h3>
+              <p class="project-desc">
+                Interactive web-based utilities for solving arithmetic sequences, divisibility tests, and foundational competitive aptitude calculations.
+              </p>
+              <div class="project-tags">
+                <span>JavaScript</span>
+                <span>Algorithms</span>
+                <span>Math Logic</span>
+              </div>
+              <div class="project-links">
+                <a href="#contact" class="btn btn-sm btn-glass">Learn More</a>
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-ghost">Source Code</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Education Section -->
+    <section class="section-padding reveal-on-scroll" id="education">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-tag">Academic Background</p>
+          <h2 class="section-title">Education Timeline</h2>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="glass-card timeline-card">
+              <span class="timeline-period">Recent</span>
+              <h3 class="timeline-degree">Pursing Btech from Aertificial intelligence</h3>
+              <p class="timeline-institution">?</p>
+              <p class="timeline-details">
+                #
+              </p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="glass-card timeline-card">
+              <span class="timeline-period">#</span>
+              <h3 class="timeline-degree">#</h3>
+              <p class="timeline-institution">#</p>
+              <p class="timeline-details">
+                #.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Achievements Section -->
+    <section class="section-padding reveal-on-scroll" id="achievements">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-tag">#</p>
+          <h2 class="section-title">#</h2>
+        </div>
+        <div class="achievements-grid">
+          <div class="glass-card achievement-card">
+            <div class="achievement-icon">🎓</div>
+            <h3>#</h3>
+            <p>#</p>
+          </div>
+          <div class="glass-card achievement-card">
+            <div class="achievement-icon">📊</div>
+            <h3>#</h3>
+            <p>#.</p>
+          </div>
+          <div class="glass-card achievement-card">
+            <div class="achievement-icon">⚡</div>
+            <h3>#</h3>
+            <p>#</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Contact Section -->
+    <section class="section-padding reveal-on-scroll" id="contact">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-tag">Get In Touch</p>
+          <h2 class="section-title">Contact Vaid</h2>
+        </div>
+        <div class="contact-grid">
+          <div class="glass-card contact-info-card">
+            <h3>Let's Connect</h3>
+            <p>
+              Have a question, an opportunity, or a collaborative project in mind? Reach out via this form or through direct channels.
+            </p>
+            <div class="contact-details">
+              <div class="contact-row">
+                <span class="contact-icon">📧</span>
+                <div>
+                  <strong>Email</strong>
+                  <p><a href="mailto:vaidtamrakar@example.com">vaidtamrakar@gmail.com</a></p>
+                </div>
+              </div>
+              <div class="contact-row">
+                <span class="contact-icon">📍</span>
+                <div>
+                  <strong>Location</strong>
+                  <p>Madhya Pradesh, India</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <form class="glass-card contact-form" id="contactForm">
+            <div class="form-group">
+              <label for="userName">Your Name</label>
+              <input type="text" id="userName" name="name" placeholder="e.g. Alex Sharma" required autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label for="userEmail">Your Email</label>
+              <input type="email" id="userEmail" name="email" placeholder="e.g. alex@example.com" required autocomplete="email">
+            </div>
+            <div class="form-group">
+              <label for="userMessage">Message</label>
+              <textarea id="userMessage" name="message" rows="4" placeholder="Write your message here..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Send Message</button>
+            <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 8. Footer -->
+  <footer class="glass-footer">
+    <div class="container footer-container">
+      <p>&copy; 2026 Vaid Tamrakar. Made in india</p>
+      <a href="#home" class="back-to-top" aria-label="Back to top">
+        <span>Back to Top</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+      </a>
+    </div>
+  </footer>
+
+  <!-- 9. Live AI Chatbot: Vedu Floating Widget -->
+  <div class="chat-widget-wrapper" id="chatWidgetWrapper">
+    <!-- Floating Trigger Button -->
+    <button class="chat-trigger-btn" id="chatTriggerBtn" aria-label="Chat with Vedu AI" aria-expanded="false" aria-controls="chatWindow">
+      <span class="chat-trigger-glow" aria-hidden="true"></span>
+      <span class="chat-trigger-icon">🤖</span>
+      <span class="chat-trigger-badge">Vedu</span>
+    </button>
+
+    <!-- Glassmorphic Chat Window -->
+    <section class="glass-chat-window" id="chatWindow" aria-label="Vedu AI Assistant" aria-hidden="true">
+      <header class="chat-header">
+        <div class="chat-identity">
+          <div class="chat-avatar">
+            <span>V</span>
+            <span class="online-indicator" aria-label="Online"></span>
+          </div>
+          <div>
+            <h3 class="chat-name">Vedu</h3>
+            <p class="chat-sub">Vaid's Portfolio Assistant</p>
+          </div>
+        </div>
+        <button class="icon-btn chat-close-btn" id="chatCloseBtn" aria-label="Minimize Chat">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </header>
+
+      <!-- Message History Container -->
+      <div class="chat-messages" id="chatMessages" role="log" aria-live="polite">
+        <!-- Messages will be appended here dynamically -->
+      </div>
+
+      <!-- Quick Suggestion Chips -->
+      <div class="chat-quick-chips" id="quickChips">
+        <button type="button" class="chip-btn" data-query="Who is Vaid?">Who is Vaid?</button>
+        <button type="button" class="chip-btn" data-query="What are Vaid's skills?">What are his skills?</button>
+        <button type="button" class="chip-btn" data-query="Show me Vaid's projects">Show projects</button>
+        <button type="button" class="chip-btn" data-query="How can I contact Vaid?">How to contact?</button>
+      </div>
+
+      <!-- Message Input Form -->
+      <form class="chat-input-form" id="chatInputForm">
+        <input type="text" id="chatInput" placeholder="Ask Vedu anything about Vaid..." autocomplete="off" maxlength="250" aria-label="Message to Vedu">
+        <button type="submit" class="chat-send-btn" id="chatSendBtn" aria-label="Send message">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        </button>
+      </form>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
